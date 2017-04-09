@@ -186,7 +186,7 @@ def hangman(secret_word,):
     alphabet = string.ascii_lowercase
     word = 'guesses'
 
-    #you_won = is_word_guessed(secret_word, letters_guessed)
+    you_won = False
     page_break = '---------------'
     input_message = 'What letter would you like to guess?\n'
     letters_not_guessed = 'The letters you have not yet guessed are:'
@@ -208,7 +208,7 @@ def hangman(secret_word,):
 
     print ('The word you are trying to guess has {} letters in it'.format(count))
 
-    while guesses_left != 0 and warnings_left != 0 and not is_word_guessed(secret_word, letters_guessed): #you_won
+    while guesses_left != 0 and warnings_left != 0 and not you_won:
         # Get input using message - guess = input(message)
         if guesses_left == 1:
             word = 'guess'
@@ -242,27 +242,25 @@ def hangman(secret_word,):
                 print (correct_letter)
                 print (get_guessed_word(secret_word, letters_guessed))
                 print ('\n')
-            
-                #if you_won(secret_word, letters_guessed):
-                if is_word_guessed(secret_word, letters_guessed):
-                    print (congrats)                
-                    break
-                
+                you_won = is_word_guessed(secret_word, letters_guessed)
+
             else:
                 print (WRONG_GUESS)
                 print (get_guessed_word(secret_word, letters_guessed))
-                print ('\n')                
+                print ('\n')
                 print (PICS[guesses_left])
                 guesses_left -= 1
-                
+
     if guesses_left == 0:
         print(out_of_guesses, secret_word)
         print(PICS[guesses_left])
-        
+
     elif warnings_left == 0:
         print(PICS[guesses_left])
         print (game_over, secret_word)
-        
+
+    elif you_won is True:
+        print (congrats)
 
 
 
