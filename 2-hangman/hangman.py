@@ -186,7 +186,7 @@ def hangman(secret_word,):
     alphabet = string.ascii_lowercase
     word = 'guesses'
 
-    you_won = False
+    #you_won = is_word_guessed(secret_word, letters_guessed)
     page_break = '---------------'
     input_message = 'What letter would you like to guess?\n'
     letters_not_guessed = 'The letters you have not yet guessed are:'
@@ -194,7 +194,7 @@ def hangman(secret_word,):
     warning = 'Oh no! You haven\'t entered a letter (you just need one!). Try again. But be careful... You only get 3 warnings).'
     warning_already_guessed = 'Oh no! You have already guessed that! Be careful, you only get 3 warnings. Try another letter:\n'
     correct_letter = '\nBravo! You guessed correctly. Your word so far is:\n'
-    congrats = '\n!!!!!!!!!!!!!!!!!!\nCongratulations! You guessed the whole word!'
+    congrats = '!!!!!!!!!!!!!!!!!!\nCongratulations! You guessed the whole word!n!!!!!!!!!!!!!!!'
     WRONG_GUESS = '\nUh-oh! That letter is not in the secret word. Your word so far is:'
     out_of_guesses = '\nYou ran out of guesses. Better luck next time! The mystery word was:'
     game_over = 'That was your last warning! Game over. Your word was:'
@@ -208,7 +208,7 @@ def hangman(secret_word,):
 
     print ('The word you are trying to guess has {} letters in it'.format(count))
 
-    while guesses_left != 0 and warnings_left != 0 and not you_won:
+    while guesses_left != 0 and warnings_left != 0 and not is_word_guessed(secret_word, letters_guessed): #you_won
         # Get input using message - guess = input(message)
         if guesses_left == 1:
             word = 'guess'
@@ -242,6 +242,11 @@ def hangman(secret_word,):
                 print (correct_letter)
                 print (get_guessed_word(secret_word, letters_guessed))
                 print ('\n')
+            
+                #if you_won(secret_word, letters_guessed):
+                if is_word_guessed(secret_word, letters_guessed):
+                    print (congrats)                
+                    break
                 
             else:
                 print (WRONG_GUESS)
@@ -258,8 +263,6 @@ def hangman(secret_word,):
         print(PICS[guesses_left])
         print (game_over, secret_word)
         
-    elif you_won == True:
-        print (congrats)
 
 
 
