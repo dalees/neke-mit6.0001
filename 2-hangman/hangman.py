@@ -516,7 +516,23 @@ def show_possible_matches(my_word, letters_guessed):
             print (", ".join(matched_words[0:20]), "....... and MANY MORE!")
         else:
             print (', '.join(matched_words))
-        
+
+
+def select_word_length(word, lengths,):
+    """
+    takes list of word and list of lengths
+    returns only words the right length
+    """
+    right_length_words = []
+    
+    for word in wordlist:
+        if not len(word) in lengths:
+            pass
+        else:
+            right_length_words.append(word)
+            
+    return right_length_words
+            
 
 def hangman_with_hints(secret_word):
     '''
@@ -586,9 +602,8 @@ def hangman_with_hints(secret_word):
     elif difficulty == '3':
         PICS = PICS3
         guesses_left = 5
-        while len(secret_word) <= 5 or len(secret_word) >= 8:
-            secret_word = choose_word(wordlist)
-        
+        secret_word = choose_word(select_word_length(wordlist, [5,6,7]))
+                        
     print ('\nThe Rules:')
     print ('You have to try and figure out what the mystery word is.')
     print ('You get only one guess per round, and your guess must be a single letter (no numbers or characters).')
@@ -699,6 +714,7 @@ def hangman_with_hints(secret_word):
             if score >= 2:
                 print (HINT_COUNTER.format(hint_count, hint_word, new_count))
             elif score <= 1:
+                score = score - 1
                 print (HINT_COUNTER.format(hint_count, hint_word, score))
 
 
