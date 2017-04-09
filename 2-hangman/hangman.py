@@ -472,6 +472,25 @@ def match_with_gaps(my_word, other_word):
     else:
         return False
 
+def get_best_letter(words_list, ignore_letters):
+    # Version1: just find the most common letter
+    letter_counts = {}
+    for word in words_list:
+      for letter in word:
+        if letter in ignore_letters:
+          continue
+        if letter not in letter_counts:
+          letter_counts[letter] = 0
+        letter_counts[letter] += 1
+
+    letter_best = None
+    letter_best_count = 0
+    for letter, count in letter_counts.items():
+      if count > letter_best_count:
+        letter_best_count = count
+        letter_best = letter
+
+    return letter_best
 
 def show_possible_matches(my_word, letters_guessed):
     """
@@ -507,15 +526,19 @@ def show_possible_matches(my_word, letters_guessed):
     for word in wordlist:
         if check_possible_match(my_word, word, letters_guessed): # makes a list of words that are possible matches 
             matched_words.append(word)
-            
-        
+    
     if len(matched_words) == 0:
         print ('There are no matches.')
+        return
+    
+    if len(matched_words) > 20:
+        print (", ".join(matched_words[0:20]), "....... and MANY MORE! (", len(matched_words), ")")
     else:
-        if len(matched_words) > 20:
-            print (", ".join(matched_words[0:20]), "....... and MANY MORE!")
-        else:
-            print (', '.join(matched_words))
+        print (', '.join(matched_words))
+
+    # Find the letter that will reveal the most about the target word
+    best_letter = get_best_letter(matched_words, letters_guessed)
+    print ('The most common unguessed letter of the possible words is ', best_letter)
 
 
 def select_word_length(word, lengths,):
