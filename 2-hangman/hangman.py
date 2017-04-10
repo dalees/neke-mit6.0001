@@ -12,6 +12,7 @@
 
 import random
 import string
+import math
 
 WORDLIST_FILENAME = "words.txt"
 
@@ -473,21 +474,37 @@ def match_with_gaps(my_word, other_word):
         return False
 
 def get_best_letter(words_list, ignore_letters):
-    # Version1: just find the most common letter
+    # Version2: give each letter position a value.
+    #           more positions of same letter should narrow search field 
+    # Assumption: All words are same length
+    wordlength = len(words_list[0])
+
+    # Create a dictionary of letters and for each letter, add up
+    # the frequency at each position.
     letter_counts = {}
     for word in words_list:
-      for letter in word:
+      for i, letter in enumerate(word):
         if letter in ignore_letters:
           continue
         if letter not in letter_counts:
-          letter_counts[letter] = 0
-        letter_counts[letter] += 1
+          letter_counts[letter] = [0] * wordlength
+        letter_counts[letter][i] += 1
 
+    # find the best scoring letter
     letter_best = None
     letter_best_count = 0
-    for letter, count in letter_counts.items():
-      if count > letter_best_count:
-        letter_best_count = count
+    for letter, pos_sums in letter_counts.items():
+      letter_score = 0
+      for pos_sum in pos_sums:
+        if pos_sum == 0:
+          continue
+        # Score letter based on the frequency of different positions.
+        # It's better to use a letter with different positions than all in 
+        # same position as it doesn't narrow the field as much.
+        letter_score += 0.5 * math.log(pos_sum) + 1
+      if letter_score > letter_best_count:
+        #print("new best letter score: ", letter_score, " for ", letter)
+        letter_best_count = letter_score
         letter_best = letter
 
     return letter_best
